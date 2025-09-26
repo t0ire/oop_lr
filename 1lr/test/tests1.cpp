@@ -11,8 +11,8 @@ TEST(tests1, NormalWords) {
 }
 
 TEST(tests2, Abracadabra) {
-    EXPECT_EQ(palindrome("a1FcF1а"), 0); // вторая а - рус, первая - англ
-    EXPECT_EQ(palindrome("a1FcF1a"), 1); // обе англ
+    EXPECT_EQ(palindrome("dksW4"), 0); 
+    EXPECT_EQ(palindrome("a1FcF1a"), 1); 
 }
 
 TEST(tests3, Numbers) {
