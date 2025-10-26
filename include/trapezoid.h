@@ -6,7 +6,8 @@ namespace figures {
 
 class Trapezoid: public Figure {
 private:
-    Point vertices[4]; //вершины - лн пн пв лн
+    static const int VERTICES_COUNT = 4;
+    Point vertices[VERTICES_COUNT]; //вершины - лн пн пв лн
 
 public:
     Trapezoid();

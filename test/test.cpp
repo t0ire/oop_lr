@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>
-
 #include <sstream>
 #include <cmath>
+
+#include <gtest/gtest.h>
 
 #include "figure.h"
 #include "rectangle.h"

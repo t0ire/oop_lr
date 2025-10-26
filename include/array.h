@@ -10,7 +10,7 @@ namespace figures {
 
 class Array {
 private:
-    size_t size_;          
+    size_t capacity_;          
     Figure** data_;        
 
 public:
@@ -26,7 +26,8 @@ public:
     Array& operator=(const Array& other);
     Array& operator=(Array&& other) noexcept;
     
-    size_t size() const { return size_; }
+    size_t capacity() const { return capacity_; }
+    size_t size() const { return capacity_; }
     Figure*& operator[](size_t index);  
     Figure* operator[](size_t index) const;  
     

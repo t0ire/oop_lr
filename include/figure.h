@@ -9,6 +9,20 @@ class Point {
 public:
     double x, y;  
     Point(double x = 0, double y = 0) : x(x), y(y) {}  
+
+    bool operator==(const Point& other) const {
+        return std::abs(x - other.x) < 1e-9 && std::abs(y - other.y) < 1e-9;
+    }   
+    
+    friend std::ostream& operator<<(std::ostream& os, const Point& point) {
+        os << "(" << point.x << ", " << point.y << ")";
+        return os;
+    }
+    
+    friend std::istream& operator>>(std::istream& is, Point& point) {
+        is >> point.x >> point.y;
+        return is;
+    }   
 };
 
 class Figure {

@@ -1,38 +1,31 @@
 #include <cmath>  
+#include <initializer_list>
 
 #include "rectangle.h" 
 
 namespace figures {
 
-Rectangle::Rectangle() {
-    vertices[0] = Point(-1, -1);  // лн
-    vertices[1] = Point(1, -1);   // пн
-    vertices[2] = Point(1, 1);    // пв
-    vertices[3] = Point(-1, 1);   // лв
-}
+Rectangle::Rectangle() 
+    : vertices{{-1, -1}, {1, -1}, {1, 1}, {-1, 1}} {}
 
-Rectangle::Rectangle(const Point& p1, const Point& p2, const Point& p3, const Point& p4) { 
-    vertices[0] = p1;  // лн
-    vertices[1] = p2;  // пн
-    vertices[2] = p3;  // пв
-    vertices[3] = p4;  // лв
-}
+Rectangle::Rectangle(const Point& p1, const Point& p2, const Point& p3, const Point& p4) 
+    : vertices{p1, p2, p3, p4} {}
 
 Rectangle::Rectangle(const Rectangle& other) {
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         vertices[i] = other.vertices[i];
     }
 }
 
 Rectangle::Rectangle(Rectangle&& other) noexcept {
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         vertices[i] = std::move(other.vertices[i]);
     }
 }
 
 Rectangle& Rectangle::operator=(const Rectangle& other) { // = копия
     if (this != &other) {  
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < VERTICES_COUNT; ++i) {
             vertices[i] = other.vertices[i];
         }
     }
@@ -41,7 +34,7 @@ Rectangle& Rectangle::operator=(const Rectangle& other) { // = копия
 
 Rectangle& Rectangle::operator=(Rectangle&& other) noexcept { // = перемещ
     if (this != &other) { 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < VERTICES_COUNT; ++i) {
             vertices[i] = std::move(other.vertices[i]);
         }
     }
@@ -53,10 +46,9 @@ bool Rectangle::operator==(const Figure& other) const {
     
     if (!rect) return false;
     
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         //огрешность (1e-9) из-за погрешностей вычислений с double
-        if (std::abs(vertices[i].x - rect->vertices[i].x) > 1e-9 ||
-            std::abs(vertices[i].y - rect->vertices[i].y) > 1e-9) {
+        if (!(vertices[i] == rect->vertices[i])) {
             return false;  //не совпадают
         }
     }
@@ -66,12 +58,12 @@ bool Rectangle::operator==(const Figure& other) const {
 Point Rectangle::geometricCenter() const {
     double centerX = 0, centerY = 0; 
     
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         centerX += vertices[i].x;
         centerY += vertices[i].y;
     }
     
-    return Point(centerX / 4.0, centerY / 4.0);
+    return Point(centerX / VERTICES_COUNT, centerY / VERTICES_COUNT);
 }
 
 double Rectangle::area() const {
@@ -89,15 +81,15 @@ double Rectangle::area() const {
 void Rectangle::printVertices(std::ostream& os) const {
     os << "rectangle: ";  
     
-    for (int i = 0; i < 4; ++i) {
-        os << "(" << vertices[i].x << ", " << vertices[i].y << ")";
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
+        os << vertices[i];
         if (i < 3) os << " ";  
     }
 }
 
 void Rectangle::readFromStream(std::istream& is) {
-    for (int i = 0; i < 4; ++i) {
-        is >> vertices[i].x >> vertices[i].y;
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
+        is >> vertices[i];
     }
 }
 

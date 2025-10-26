@@ -1,38 +1,31 @@
-#include <cmath>  
+#include <cmath> 
+#include <initializer_list> 
 
 #include "rhombus.h"  
 
 namespace figures {
 
-Rhombus::Rhombus() {
-    vertices[0] = Point(-1, 0);   
-    vertices[1] = Point(0, -1);  
-    vertices[2] = Point(1, 0);   
-    vertices[3] = Point(0, 1);    
-}
+Rhombus::Rhombus() 
+    : vertices{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {} 
 
-Rhombus::Rhombus(const Point& p1, const Point& p2, const Point& p3, const Point& p4) {
-    vertices[0] = p1;  
-    vertices[1] = p2;  
-    vertices[2] = p3;  
-    vertices[3] = p4;  
-}
+Rhombus::Rhombus(const Point& p1, const Point& p2, const Point& p3, const Point& p4) 
+    : vertices{p1, p2, p3, p4} {}
 
 Rhombus::Rhombus(const Rhombus& other) {
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         vertices[i] = other.vertices[i];
     }
 }
 
 Rhombus::Rhombus(Rhombus&& other) noexcept {
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         vertices[i] = std::move(other.vertices[i]);
     }
 }
 
 Rhombus& Rhombus::operator=(const Rhombus& other) {
     if (this != &other) {  
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < VERTICES_COUNT; ++i) {
             vertices[i] = other.vertices[i];
         }
     }
@@ -41,7 +34,7 @@ Rhombus& Rhombus::operator=(const Rhombus& other) {
 
 Rhombus& Rhombus::operator=(Rhombus&& other) noexcept {
     if (this != &other) { 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < VERTICES_COUNT; ++i) {
             vertices[i] = std::move(other.vertices[i]);
         }
     }
@@ -54,10 +47,9 @@ bool Rhombus::operator==(const Figure& other) const {
     
     if (!rhomb) return false;
     
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         //погрешность (1e-9) из-за погрешностей вычислений с double
-        if (std::abs(vertices[i].x - rhomb->vertices[i].x) > 1e-9 ||
-            std::abs(vertices[i].y - rhomb->vertices[i].y) > 1e-9) {
+        if (!(vertices[i] == rhomb->vertices[i])) {
             return false;  //не совпадают
         }
     }
@@ -67,12 +59,12 @@ bool Rhombus::operator==(const Figure& other) const {
 Point Rhombus::geometricCenter() const {
     double centerX = 0, centerY = 0;  
     
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
         centerX += vertices[i].x;
         centerY += vertices[i].y;
     }
     
-    return Point(centerX / 4.0, centerY / 4.0);
+    return Point(centerX / VERTICES_COUNT, centerY / VERTICES_COUNT);
 }
 
 double Rhombus::area() const {
@@ -88,17 +80,17 @@ double Rhombus::area() const {
 }
 
 void Rhombus::printVertices(std::ostream& os) const {
-    os << "Rhombus vertices: ";  
+    os << "rhombus: ";  
     
-    for (int i = 0; i < 4; ++i) {
-        os << "(" << vertices[i].x << ", " << vertices[i].y << ")";
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
+        os << vertices[i];
         if (i < 3) os << " ";  
     }
 }
 
 void Rhombus::readFromStream(std::istream& is) {
-    for (int i = 0; i < 4; ++i) {
-        is >> vertices[i].x >> vertices[i].y;
+    for (int i = 0; i < VERTICES_COUNT; ++i) {
+        is >> vertices[i];
     }
 }
 
